@@ -1,0 +1,134 @@
+
+/*
+ * Globals
+ */
+
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritance from `body` */
+}
+
+@media screen and (max-width: 600px) {
+  #cartas {
+  display:none;
+  }
+  }
+
+
+/*
+ * Base structure
+ */
+
+body {
+  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+  font-family: "Abel", sans-serif;
+}
+
+.cover-container {
+  max-width: 42em;
+}
+
+
+/*
+ * Header
+ */
+
+.nav-masthead .nav-link {
+  padding: .25rem 0;
+  font-weight: 700;
+  color: rgba(255, 255, 255, .5);
+  background-color: transparent;
+  border-bottom: .25rem solid transparent;
+}
+
+.nav-masthead .nav-link:hover,
+.nav-masthead .nav-link:focus {
+  border-bottom-color: rgba(255, 255, 255, .25);
+}
+
+.nav-masthead .nav-link + .nav-link {
+  margin-left: 1rem;
+}
+
+.nav-masthead .active {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+
+/* 
+Propiedades de los div de las imagenes de cartas
+*/
+#cartas{
+  width: 100%;
+}
+
+#cartas .cards-left, #cartas .cards-right, #cartas .cards-king, #cartas .cards-king-heart, #cartas .cards-10-dot, #cartas .cards-10-heart{
+  float: left;
+  margin: 5px;
+}
+
+.cards-left  img{
+  border-radius: 10px;
+}
+
+.cards-right  img{
+  border-radius: 10px;
+}
+
+.cards-king img{
+  border-radius: 10px;
+}
+
+.cards-king-heart img{
+  border-radius: 10px;
+}
+
+.cards-10-dot img{
+  border-radius: 10px;
+}
+
+.cards-10-heart img{
+  border-radius: 10px;
+}
+
+.magictime {
+  -webkit-animation-duration: 6s;
+  animation-duration: 6s;
+}
+
+
+.main{
+  margin-bottom: 600px;
+  margin-top: 20px;
+} 
+
+
+.cartas{
+  width: 150px;
+  position: relative;
+  margin-left: -70px;
+}
+
+.player{
+  margin-right: 600px;
+  
+}
