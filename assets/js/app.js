@@ -110,7 +110,7 @@ setInterval(function(){
             newcard.src = `./assets/img/cartas/${ tomarcarta }.png`;
             cartapcHtml.append(newcard); 
             saberGanador();
-        } while ((puntospc <= 21));
+        } while ((puntosminimos >= 10 && puntospc <= 21 ));
     }
 
 
@@ -125,16 +125,8 @@ setInterval(function(){
                     title: ' Hay un empate, suerte para la proxima ',
                     showConfirmButton: false,
                     timer: 3000
-                })    
-            }else if( puntospc === 21  ||   puntosjugador > 21  ||   puntospc < 21  ||   puntosjugador > puntospc ){
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: ' Ha ganado la casa, lo siento ',
-                    showConfirmButton: false,
-                    timer: 3000
                 })
-            }else{
+            }else if( puntospc > 21 && puntosjugador < 21){
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -142,7 +134,31 @@ setInterval(function(){
                     showConfirmButton: false,
                     timer: 3000
                 })
-            }
+            }else if( puntospc < 21 && puntosjugador > 21){
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: ' Ha ganado la casa, lo siento ',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }else if( (puntospc === 21 || puntospc > puntosjugador || puntosjugador > 21)){
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: ' Ha ganado la casa, lo siento ',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }else if(puntosjugador > puntospc && puntosjugador <= 21  ){
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: ' Felicitaciones has ganado, tu puntuacion fue mejor ',
+                    showConfirmButton: false,
+                    timer: 3000
+                })
+            }     
         },2000)
     }
 
