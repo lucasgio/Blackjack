@@ -93,7 +93,8 @@ setInterval(function(){
                 deck.push(esp + tipo);
             }
         }
-        return _.shuffle(deck);
+        deck = _.shuffle(deck)
+        return  deck;
         
     }
     
@@ -103,7 +104,6 @@ setInterval(function(){
         if (deck.length === 0) {
             throw " No hay carta en el deck";
         }
-        console.warn(deck);
         return deck.pop();
     };
 
