@@ -68,16 +68,19 @@ setInterval(function(){
     const cartasespeciales = ['A', 'Q', 'J', 'K'];
     let deck = [];
     let puntosJugadores = [];
+    let puntospc ;
       
-    
-    const iniciarDeck = ( numJugadores = 1) => {
+
+    const iniciarDeck = ( numJugadores = 2) => {
         barajearDeck();
-        console.log({numJugadores});
+        for (let i = 0; i < numJugadores; i++) {
+            puntosJugadores.push(0);
+        }
+        console.log({ puntosJugadores });
     }
 
     //  Funcion que crea deck con las cartas barajeadas
     const barajearDeck = () => {
-        deck = [];
         // Creamos el primer deck con las cartas de numeros
         for (let i = 2; i <= 10; i++) {
             for (let tipo of tipos) {
@@ -90,8 +93,8 @@ setInterval(function(){
                 deck.push(esp + tipo);
             }
         }
-        // deck = _.shuffle(deck);
         return _.shuffle(deck);
+        
     }
     
 
@@ -100,6 +103,7 @@ setInterval(function(){
         if (deck.length === 0) {
             throw " No hay carta en el deck";
         }
+        console.warn(deck);
         return deck.pop();
     };
 
@@ -113,10 +117,12 @@ setInterval(function(){
             :    valor * 1;    
     };
 
-    // valorCarta(pedircarta());
 
-    const acumularPuntos = () => {
-
+    const acumularPuntos = (tomarcarta,turno) => {
+        console.warn(tomarcarta);
+        puntosJugadores[turno] = puntosJugadores[turno] + valorCarta(tomarcarta);
+        console.warn(puntosJugadores);
+        return puntosJugadores[turno];
     }
 
 
@@ -127,10 +133,7 @@ setInterval(function(){
 
         do {
             const tomarcarta = pedircarta();
-
-            puntospc = puntospc + valorCarta(tomarcarta);
-            // console.log(puntospc);
-            secondsmall.innerHTML = puntospc;
+            acumularPuntos(tomarcarta, puntosJugadores.length - 1);
             //  insertamos la carta en el html
             const newcard = document.createElement('img');
             newcard.classList.add('cartas');
@@ -193,18 +196,19 @@ setInterval(function(){
 
     btnPedir.addEventListener('click', () => { 
         const tomarcarta = pedircarta();
-        puntosjugador = puntosjugador + valorCarta(tomarcarta);
-        firstsmall.innerHTML = puntosjugador;
+        console.warn(tomarcarta);
+        const puntosJugadores = acumularPuntos(tomarcarta,0);
+        //  firstsmall.innerHTML = puntosjugador;
         //  insertamos la carta en el html
         const newcard = document.createElement('img');
         newcard.classList.add('cartas');
         newcard.src = `./assets/img/cartas/${ tomarcarta }.png`;
         cartaplayerHtml.append(newcard);
-        if ( puntosjugador > 21) {
+        if ( puntosJugadores > 21) {
             btnPedir.disabled = true;
             btnStop.disabled = true;
-            turnoPC( puntosjugador );
-        }else if( puntosjugador === 21){
+            turnoPC( puntosJugadores );
+        }else if( puntosJugadores === 21){
             Swal.fire({
                 position: 'center',
                 icon: 'success',
@@ -212,7 +216,7 @@ setInterval(function(){
                 showConfirmButton: false,
                 timer: 3000
             })
-            turnoPC( puntosjugador );  
+            turnoPC( puntosJugadores );  
         }
     });
 
@@ -227,7 +231,7 @@ setInterval(function(){
     btnStop.addEventListener('click',() => { 
         btnPedir.disabled = true;
         btnStop.disabled = true;
-        turnoPC(puntosjugador);
+        turnoPC(puntosJugadores);
     });
 
 
