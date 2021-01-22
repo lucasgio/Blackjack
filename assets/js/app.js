@@ -34,28 +34,50 @@ setInterval(function(){
         /* 
     Referencia del HTML
     */
-    const btnPedir = document.querySelector('#btnGiveMeCart');
-    const btnNewJuego = document.querySelector('#btnNewGame');
-    const btnStop = document.querySelector('#btnStop');
-    const firstsmall = document.querySelector('.ptsplayer');
-    const secondsmall = document.querySelector('.ptspc');
-    const cartaplayerHtml = document.querySelector('#deckjugador');
-    const cartapcHtml = document.querySelector('#deckpc');
+    const btnPedir = document.querySelector('#btnGiveMeCart'),
+          btnNewJuego = document.querySelector('#btnNewGame'),
+          btnStop = document.querySelector('#btnStop'),
+          firstsmall = document.querySelector('.ptsplayer'),
+          secondsmall = document.querySelector('.ptspc'),
+          cartaplayerHtml = document.querySelector('#deckjugador'),
+          cartapcHtml = document.querySelector('#deckpc');
     /* 
-    Deck Funcionabilidad
+     Funcion para cambiar propiedades de los botones (false) 
+    */
+
+    
+    const propbotones = ( state = 1)=>{
+        
+        if( state === 1 ){
+            btnPedir.disabled = true;
+            btnStop.disabled = true;  
+        }else{
+            btnPedir.disabled = false;
+            btnStop.disabled = false;     
+        }
+        
+     }
+    
+    propbotones(); 
+
+    /* 
+    Global variable
     */
 
     let tipos = ['C', 'D', 'H', 'S'];
     const cartasespeciales = ['A', 'Q', 'J', 'K'];
     let deck = [];
-    let puntosjugador = 0,
-        puntospc = 0;
-    let balckjack = 0;
-
+    let puntosJugadores = [];
+      
+    
+    const iniciarDeck = ( numJugadores = 1) => {
+        barajearDeck();
+        console.log({numJugadores});
+    }
 
     //  Funcion que crea deck con las cartas barajeadas
     const barajearDeck = () => {
-
+        deck = [];
         // Creamos el primer deck con las cartas de numeros
         for (let i = 2; i <= 10; i++) {
             for (let tipo of tipos) {
@@ -68,20 +90,17 @@ setInterval(function(){
                 deck.push(esp + tipo);
             }
         }
-        // Barajeamos el array de las cartas
-        deck = _.shuffle(deck);
-        return deck;
+        // deck = _.shuffle(deck);
+        return _.shuffle(deck);
     }
-    barajearDeck();
+    
 
     //  Funcion para pedir carta
     const pedircarta = () => {
         if (deck.length === 0) {
             throw " No hay carta en el deck";
         }
-        const carta = deck.pop();
-        // console.log({ carta });
-        return carta;
+        return deck.pop();
     };
 
 
@@ -94,13 +113,21 @@ setInterval(function(){
             :    valor * 1;    
     };
 
-    valorCarta(pedircarta());
+    // valorCarta(pedircarta());
+
+    const acumularPuntos = () => {
+
+    }
+
+
+
 
     //  Turno de PC
     const turnoPC = ( puntosminimos ) => {
 
         do {
             const tomarcarta = pedircarta();
+
             puntospc = puntospc + valorCarta(tomarcarta);
             // console.log(puntospc);
             secondsmall.innerHTML = puntospc;
@@ -116,9 +143,7 @@ setInterval(function(){
 
     const saberGanador  = () => {
         setTimeout( ()=> {
-
             if ( puntospc === puntosjugador  ) {
-
                 Swal.fire({
                     position: 'center',
                     icon: 'warning',
@@ -162,6 +187,7 @@ setInterval(function(){
         },2000)
     }
 
+     
 
     // Eventos
 
@@ -192,31 +218,16 @@ setInterval(function(){
 
 
     btnNewJuego.addEventListener('click', () => {
-        Swal.fire({
-            title: 'Estas seguro de iniciar nuevo juego?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si,quiero iniciar nuevo juego!',
-            showClass: {
-                popup: 'animate__animated animate__fadeInRightBig'
-            },
-            hideClass: {
-                popup: 'animate__animated animate__fadeOutUp'
-            }
-        }).then((result) => {
-            window.location.reload();
-        })
+        propbotones(0);
+        iniciarDeck();
+
     }); 
 
 
     btnStop.addEventListener('click',() => { 
-
         btnPedir.disabled = true;
         btnStop.disabled = true;
         turnoPC(puntosjugador);
-
     });
 
 
