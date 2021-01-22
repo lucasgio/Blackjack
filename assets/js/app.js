@@ -110,7 +110,7 @@ setInterval(function(){
             newcard.src = `./assets/img/cartas/${ tomarcarta }.png`;
             cartapcHtml.append(newcard); 
             saberGanador();
-        } while ((puntosminimos >= 10 && puntospc <= 21 ));
+        } while (( puntospc <= 21 && puntospc < puntosjugador  ));
     }
 
 
@@ -126,7 +126,7 @@ setInterval(function(){
                     showConfirmButton: false,
                     timer: 3000
                 })
-            }else if( puntospc > 21 && puntosjugador < 21){
+            }else if( puntospc > 21 && puntosjugador < 21 && puntosjugador < puntospc || puntosjugador === 21){
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
