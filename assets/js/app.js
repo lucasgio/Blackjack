@@ -27,7 +27,7 @@ setInterval(function(){
     $('.cards-10-heart').toggleClass('magictime spaceOutRight');
 }, 3000 );
 
-(()=>{
+const miApp = (()=>{
 
     'use strict'
 
@@ -40,35 +40,35 @@ setInterval(function(){
           firstsmall = document.querySelector('.ptsplayer'),
           secondsmall = document.querySelector('.ptspc'),
           cartaplayerHtml = document.querySelector('#deckjugador'),
-          cartapcHtml = document.querySelector('#deckpc');
+          cartapcHtml = document.querySelector('#deckpc'),
+          btnLimpiarDeck = document.querySelector('#btnLimpiarDeck');
     /* 
      Funcion para cambiar propiedades de los botones (false) 
     */
 
     
+    
     const propbotones = ( state = 1)=>{
-        
         if( state === 1 ){
             btnPedir.disabled = true;
-            btnStop.disabled = true;  
+            btnStop.disabled = true; 
+             
         }else{
             btnPedir.disabled = false;
             btnStop.disabled = false;     
         }
-        
      }
-    
-    propbotones(); 
+     propbotones();
 
     /* 
     Global variable
     */
-
     let tipos = ['C', 'D', 'H', 'S'];
     const cartasespeciales = ['A', 'Q', 'J', 'K'];
     let deck = [];
     let puntosJugadores = [];
-    let puntospc ;
+    let puntospc;
+
       
 
     const iniciarDeck = ( numJugadores = 2) => {
@@ -76,7 +76,6 @@ setInterval(function(){
         for (let i = 0; i < numJugadores; i++) {
             puntosJugadores.push(0);
         }
-        console.log({ puntosJugadores });
     }
 
     //  Funcion que crea deck con las cartas barajeadas
@@ -93,9 +92,8 @@ setInterval(function(){
                 deck.push(esp + tipo);
             }
         }
-        deck = _.shuffle(deck)
-        return  deck;
         
+        return  deck = _.shuffle(deck);
     }
     
 
@@ -118,35 +116,33 @@ setInterval(function(){
     };
 
 
-    const acumularPuntos = (tomarcarta,turno) => {
-        console.warn(tomarcarta);
-        puntosJugadores[turno] = puntosJugadores[turno] + valorCarta(tomarcarta);
-        console.warn(puntosJugadores);
-        return puntosJugadores[turno];
-    }
-
-
-
-
     //  Turno de PC
     const turnoPC = ( puntosminimos ) => {
-
         do {
             const tomarcarta = pedircarta();
-            acumularPuntos(tomarcarta, puntosJugadores.length - 1);
-            //  insertamos la carta en el html
+            puntospc = acumularPuntos(tomarcarta,puntosJugadores.length - 1);
+            secondsmall.innerHTML = puntospc;
             const newcard = document.createElement('img');
             newcard.classList.add('cartas');
             newcard.src = `./assets/img/cartas/${ tomarcarta }.png`;
             cartapcHtml.append(newcard); 
             saberGanador();
-        } while (( puntospc <= 21 && puntospc < puntosjugador  ));
+        } while ( puntospc <= 21 && puntospc <= puntosminimos );
+         
     }
+
+
+    const acumularPuntos = (tomarcarta,turno) => {
+        puntosJugadores[turno] = puntosJugadores[turno] + valorCarta(tomarcarta);
+        console.log(puntosJugadores[0],puntosJugadores[1]);
+        return puntosJugadores[turno];
+    }
+
 
 
     const saberGanador  = () => {
         setTimeout( ()=> {
-            if ( puntospc === puntosjugador  ) {
+            if ( puntospc === puntosJugadores[0]  ) {
                 Swal.fire({
                     position: 'center',
                     icon: 'warning',
@@ -154,7 +150,7 @@ setInterval(function(){
                     showConfirmButton: false,
                     timer: 3000
                 })
-            }else if( puntospc > 21 && puntosjugador < 21 && puntosjugador < puntospc || puntosjugador === 21){
+            }else if( puntospc > 21 && puntosJugadores[0] < 21 && puntosJugadores[0] < puntospc || puntosJugadores[0] === 21){
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -162,7 +158,7 @@ setInterval(function(){
                     showConfirmButton: false,
                     timer: 3000
                 })
-            }else if( puntospc < 21 && puntosjugador > 21){
+            }else if( puntospc < 21 && puntosJugadores[0] > 21){
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
@@ -170,7 +166,7 @@ setInterval(function(){
                     showConfirmButton: false,
                     timer: 3000
                 })
-            }else if( (puntospc === 21 || puntospc > puntosjugador || puntosjugador > 21)){
+            }else if( (puntospc === 21 || puntospc > puntosJugadores[0] || puntosJugadores[0] > 21)){
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
@@ -178,7 +174,7 @@ setInterval(function(){
                     showConfirmButton: false,
                     timer: 3000
                 })
-            }else if(puntosjugador > puntospc && puntosjugador <= 21  ){
+            }else if(puntosJugadores[0] > puntospc && puntosJugadores[0] <= 21  ){
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -186,27 +182,33 @@ setInterval(function(){
                     showConfirmButton: false,
                     timer: 3000
                 })
-            }     
+            }
+            btnNewJuego.disabled = true;  
         },2000)
     }
 
-     
+
 
     // Eventos
-
     btnPedir.addEventListener('click', () => { 
-        const tomarcarta = pedircarta();
-        console.warn(tomarcarta);
-        const puntosJugadores = acumularPuntos(tomarcarta,0);
-        //  firstsmall.innerHTML = puntosjugador;
+        const tomarcarta = pedircarta(),
+              puntosJugadores = acumularPuntos(tomarcarta,0);
+        firstsmall.innerHTML = puntosJugadores;
         //  insertamos la carta en el html
         const newcard = document.createElement('img');
         newcard.classList.add('cartas');
         newcard.src = `./assets/img/cartas/${ tomarcarta }.png`;
         cartaplayerHtml.append(newcard);
+        saberMayor21();
+    });
+
+    btnLimpiarDeck.addEventListener('click',() => {
+        window.location.reload();
+    });
+
+    const saberMayor21 = () => {
         if ( puntosJugadores > 21) {
-            btnPedir.disabled = true;
-            btnStop.disabled = true;
+            propbotones();
             turnoPC( puntosJugadores );
         }else if( puntosJugadores === 21){
             Swal.fire({
@@ -218,23 +220,23 @@ setInterval(function(){
             })
             turnoPC( puntosJugadores );  
         }
-    });
-
+    };
 
     btnNewJuego.addEventListener('click', () => {
-        propbotones(0);
+        
+        propbotones(0)
         iniciarDeck();
-
     }); 
 
 
     btnStop.addEventListener('click',() => { 
-        btnPedir.disabled = true;
-        btnStop.disabled = true;
-        turnoPC(puntosJugadores);
+        propbotones();
+        turnoPC(puntosJugadores[0]);
     });
+    
 
-
-
+    return {
+        iniciajuego : iniciarDeck
+    };
 
 })();
