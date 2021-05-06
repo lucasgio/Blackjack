@@ -1,7 +1,7 @@
 #### Blackjack es un juego de carta escrito en javascript puro con Bootstrap que deleita con un juego de mesa muy peculiar.Voy a ir subiendo futuras actualizaciones con contenido nuevo y codigo que a lo mejor pueden ayudarlos.Gracias :)))))
 
 ##### Link del deploy
-<a href="https://lucasgio.github.io/Blackjack/" target="_blank"></a>
+<a href="https://lucasgio.github.io/Blackjack/index.html" target="_blank"></a>
 
 ##### Descarga la repo 
 https://github.com/lucasgio/Blackjack.git
